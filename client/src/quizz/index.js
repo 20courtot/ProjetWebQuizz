@@ -64,8 +64,14 @@ const Quizz = () => {
                                 <div className="card-body">
                                     <h5 className="card-title">{quiz.titre}</h5>
                                     <p className="card-text">Description du quiz</p>
-                                    <Link to={`/quizz/edit/${quiz.id}`} className="btn btn-primary mr-2">Modifier</Link>
-                                    <button className="btn btn-danger ms-2" onClick={() => handleDeleteQuizz(quiz.id)}>Supprimer</button>
+                                    {user && user.role === 'eleve' ? (
+                                        <Link to={`/quizz/take/${quiz.id}`} className="btn btn-primary mr-2">Passer</Link>
+                                    ) : (
+                                        <>
+                                            <Link to={`/quizz/edit/${quiz.id}`} className="btn btn-primary mr-2">Modifier</Link>
+                                            <button className="btn btn-danger ms-2" onClick={() => handleDeleteQuizz(quiz.id)}>Supprimer</button>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                         </div>

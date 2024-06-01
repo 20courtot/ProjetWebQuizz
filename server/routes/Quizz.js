@@ -53,7 +53,7 @@ router.put('/quizz/:id', authenticateToken, async (req, res) => {
         // Créer de nouvelles questions
         if (questions && questions.length > 0) {
             await Promise.all(questions.map(async (question) => {
-                await Question.create({ libelle: question.libelle, quizzId });
+                await Question.create({ libelle: question.libelle, QuizzId : quizzId });
             }));
         }
 

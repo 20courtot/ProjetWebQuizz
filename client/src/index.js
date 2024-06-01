@@ -7,6 +7,7 @@ import Home from './Home';
 import Quizz from './quizz/index';
 import CreateQuizz from './quizz/create';
 import EditQuizz from './quizz/edit';
+import TakeQuizz from './quizz/take';
 import Groupes from './groupes/index';
 import CreateGroupe from './groupes/create';
 import EditGroupe from './groupes/edit';
@@ -26,6 +27,7 @@ const App = () => {
                     <Route path="/quizz" element={<Quizz />} />
                     <Route path="/quizz/create" element={<CreateQuizz />} />
                     <Route path="/quizz/edit/:id" element={<EditQuizz />} />
+                    <Route path="/quizz/take/:id" element={<TakeQuizz />} />
                     <Route path="/groupes" element={<Groupes />} />
                     <Route path="/groupes/create" element={<CreateGroupe />} />
                     <Route path="/groupes/edit/:id" element={<EditGroupe />} />

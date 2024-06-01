@@ -67,7 +67,7 @@ router.get('/groupes/:id', authenticateToken, async (req, res) => {
             return res.status(404).json({ message: 'Groupe non trouvé.' });
         }
 
-        const users = await groupe.getUsers(); // Utilisez getUsers() au lieu de GetUsers()
+        const users = await groupe.getMembers();
         console.log(users);
         res.status(200).json({ groupe, users });
     } catch (error) {
