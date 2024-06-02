@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {
     const [firstName, setFirstName] = useState('');
@@ -8,6 +8,8 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('professeur'); // État pour le rôle avec une valeur par défaut
+    const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -22,11 +24,12 @@ const Register = () => {
                 role // Inclure le rôle dans les données envoyées
             });
 
-            // Traiter la réponse du serveur (par exemple, rediriger l'utilisateur vers une autre page)
-            console.log('Réponse du serveur :', response.data);
+            // Rediriger l'utilisateur vers la page de connexion après une inscription réussie
+            navigate('/login');
         } catch (error) {
             // Gérer les erreurs (par exemple, afficher un message d'erreur à l'utilisateur)
-            console.error('Erreur lors de l\'inscription :', error.response?.data?.message);
+            const errorMsg = error.response?.data?.message || "Une erreur est survenue lors de l'inscription.";
+            setErrorMessage(errorMsg);
         }
     };
 
@@ -36,6 +39,7 @@ const Register = () => {
                 <div className="row">
                     <div className="col-md-6 mx-auto border p-4">
                         <h2>Inscription</h2>
+                        {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
                         <form onSubmit={handleSubmit}>
                             <div className="form-group">
                                 <label htmlFor="firstName">Prénom</label>
@@ -65,9 +69,9 @@ const Register = () => {
                                 </select>
                             </div>
 
-                            <div>
-                                <button className="btn btn-secondary mt-3"><Link className="dropdown-item" to="/login">Se connecter</Link></button>
-                                <button type="submit" className="btn btn-primary mt-3 ms-2">
+                            <div className="mt-3">
+                                <Link className="btn btn-secondary" to="/login">Se connecter</Link>
+                                <button type="submit" className="btn btn-primary ms-2">
                                     S'inscrire
                                 </button>
                             </div>

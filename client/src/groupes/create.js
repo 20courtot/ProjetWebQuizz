@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/header';
 import { BiSolidTrash } from 'react-icons/bi';
 
@@ -8,6 +9,7 @@ const CreateGroupe = () => {
     const [email, setEmail] = useState('');
     const [emails, setEmails] = useState([]);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -32,12 +34,12 @@ const CreateGroupe = () => {
             console.log(response.data);
             // Si la création réussit, effacez les erreurs précédentes
             setError('');
-            // Traitez la réponse du backend si nécessaire
-            // Rediriger ou afficher un message de succès
+            // Rediriger vers la liste des groupes avec un message de succès
+            navigate('/groupes', { state: { message: 'Groupe ajouté avec succès!' } });
         } catch (error) {
             console.error('Erreur lors de la création du groupe :', error);
             // Affichez le message d'erreur dans l'interface utilisateur
-            setError(error.response.data.message);
+            setError(error.response?.data?.message || 'Erreur lors de la création du groupe');
         }
     };
 

@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
 
     Question.associate = models => {
         Question.belongsTo(models.Quizz, { foreignKey: 'QuizzId' });
-        Question.belongsTo(models.TypeQuestion, { foreignKey: 'TypeQuestionId' }); // Une question appartient à un type de question
+        Question.belongsTo(models.TypeQuestion, { foreignKey: 'TypeQuestionId' });
+        Question.hasMany(models.Answer, { foreignKey: 'QuestionId', onDelete: 'CASCADE' });
     };
 
     return Question;

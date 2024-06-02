@@ -74,6 +74,11 @@ const Header = () => {
                                 </ul>
                             </li>
                         )}
+                        {user && user.role === 'professeur' && (
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/stat">Statistiques</Link>
+                            </li>
+                        )}
                         {user && user.role === 'admin' && (
                             <li className="nav-item">
                                 <Link className="nav-link" to="/users">Utilisateurs</Link>
@@ -84,7 +89,8 @@ const Header = () => {
                         {user ? (
                             <>
                                 <p className="m-0 me-3">{user.firstName} {user.lastName}</p>
-                                <button className="btn btn-outline-primary" onClick={handleLogout}>Se déconnecter</button>
+                                <Link to="/change-password" className="btn btn-secondary">Modifier le mot de passe</Link>
+                                <button className="btn btn-outline-primary ms-4" onClick={handleLogout}>Se déconnecter</button>
                             </>
                         ) : (
                             <Link className="btn btn-outline-success" to="/login">Se connecter</Link>

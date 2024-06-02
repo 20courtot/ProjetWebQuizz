@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/header';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 const Groupes = () => {
     const [groupes, setGroupes] = useState([]);
     const [user, setUser] = useState(null);
-
+    const location = useLocation(); // Utiliser useLocation pour accéder à l'état
+    const [showMessage, setShowMessage] = useState(false);
     useEffect(() => {
         // Récupérer les informations de l'utilisateur du localStorage
         const fetchUser = async () => {
@@ -39,7 +40,16 @@ const Groupes = () => {
                 console.error('Erreur lors de la récupération des groupes :', error);
             });
     }, [user]);
-
+    useEffect(() => {
+        if (location.state && location.state.message) {
+            setShowMessage(true);
+            const timer = setTimeout(() => {
+                setShowMessage(false);
+                window.history.replaceState({}, document.title);
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [location]);
     const handleDeleteGroupe = async (groupeId) => {
         try {
             // Effectuer une requête pour supprimer le groupe
@@ -57,6 +67,11 @@ const Groupes = () => {
             <Header />
             <div className="m-4">
                 <h2 className="mb-4">Liste des groupes</h2>
+                {showMessage && (
+                    <div className="alert alert-success" role="alert">
+                        {location.state.message}
+                    </div>
+                )}
                 <div className="row">
                     {groupes.map(groupe => (
                         <div key={groupe.id} className="col-md-4 mb-4">

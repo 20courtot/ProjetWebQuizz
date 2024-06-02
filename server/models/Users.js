@@ -33,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
         // Association avec Groupe
         User.hasMany(models.Groupe, { foreignKey: 'CreatedBy' });
         User.belongsToMany(models.Groupe, { through: 'UserGroupe', as: 'AssociatedGroups' });
+        User.hasMany(models.Answer, { foreignKey: 'StudentId', onDelete: 'CASCADE' }); 
     };
 
     return User;

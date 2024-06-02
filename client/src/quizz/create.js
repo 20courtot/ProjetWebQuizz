@@ -2,12 +2,14 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import Header from '../components/header';
 import { BiSolidTrash } from 'react-icons/bi';
+import { useNavigate } from 'react-router-dom';
 
 const CreateQuizz = () => {
     const [titre, setTitre] = useState('');
     const [questions, setQuestions] = useState(['']);
     const [groupes, setGroupes] = useState([]);
     const [selectedGroupe, setSelectedGroupe] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchGroupes = async () => {
@@ -58,7 +60,7 @@ const CreateQuizz = () => {
             }
         })
         .then(response => {
-            console.log(response.data);
+            navigate('/quizz', { state: { message: 'Quizz ajouté avec succès!' } });
         })
         .catch(error => {
             console.error('Erreur lors de la création du quizz :', error);

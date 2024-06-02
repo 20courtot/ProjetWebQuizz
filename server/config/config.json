@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "",
+    "password": "Root123456789$$",
     "database": "quizz",
     "host": "127.0.0.1",
     "dialect": "mysql"

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/header';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import { BiSolidTrash } from 'react-icons/bi';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const TakeQuizz = () => {
     const { id } = useParams();
@@ -10,6 +9,8 @@ const TakeQuizz = () => {
     const [questions, setQuestions] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
+    const [answeredQuestions, setAnsweredQuestions] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchQuizzDetails = async () => {
@@ -18,6 +19,15 @@ const TakeQuizz = () => {
                 setQuizz(response.data);
                 setQuestions(response.data.Questions);
                 setIsLoading(false);
+
+                const token = localStorage.getItem('token');
+                if (token) {
+                    axios.defaults.headers.common['Authorization'] = token;
+                    const answersResponse = await axios.get(`http://localhost:3001/api/quizz/${id}/answers`);
+                    setAnsweredQuestions(answersResponse.data.map(answer => answer.QuestionId));
+                } else {
+                    navigate('/login');
+                }
             } catch (error) {
                 console.error('Erreur lors de la récupération des détails du quizz :', error);
                 setIsLoading(false);
@@ -25,7 +35,7 @@ const TakeQuizz = () => {
         };
 
         fetchQuizzDetails();
-    }, [id]);
+    }, [id, navigate]);
 
     const handleAnswer = async (answer) => {
         const token = localStorage.getItem('token');
@@ -51,8 +61,8 @@ const TakeQuizz = () => {
                 setCurrentQuestionIndex(currentQuestionIndex + 1);
             } else {
                 // Quiz terminé, afficher un message de fin
-                console.log('Quiz terminé !');
-                // TODO: Rediriger l'utilisateur ou afficher un message de fin
+                alert('Quiz terminé !');
+                navigate('/quizz', { state: { message: 'Quiz terminé avec succès!' } });
             }
         } catch (error) {
             console.error('Erreur lors de la soumission de la réponse :', error);
@@ -68,14 +78,16 @@ const TakeQuizz = () => {
         return <div>Erreur lors de la récupération du quizz.</div>;
     }
 
+    const filteredQuestions = questions.filter(q => !answeredQuestions.includes(q.id));
+
     return (
         <div>
             <Header />
             <div className="container">
                 <h2 className="my-4">{quizz.titre}</h2>
-                {currentQuestionIndex < questions.length && (
+                {currentQuestionIndex < filteredQuestions.length && (
                     <Question
-                        question={questions[currentQuestionIndex]}
+                        question={filteredQuestions[currentQuestionIndex]}
                         onAnswer={handleAnswer}
                     />
                 )}

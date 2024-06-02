@@ -7,11 +7,11 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, passwor
     try {
         const user = await User.findOne({ where: { email } });
         if (!user) {
-            return done(null, false, { message: 'Adresse e-mail incorrecte.' });
+            return done(null, false, { message: 'Adresse e-mail ou mot de passe incorrecte.' });
         }
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return done(null, false, { message: 'Mot de passe incorrect.' });
+            return done(null, false, { message: 'Adresse e-mail ou mot de passe incorrect.' });
         }
         return done(null, user);
     } catch (error) {

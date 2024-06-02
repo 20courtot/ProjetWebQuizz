@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/header';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { BiSolidTrash } from 'react-icons/bi';
 
 const EditQuizz = () => {
@@ -10,6 +10,7 @@ const EditQuizz = () => {
     const [questions, setQuestions] = useState(['']);
     const [groupes, setGroupes] = useState([]);
     const [selectedGroupe, setSelectedGroupe] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchQuizzDetails = async () => {
@@ -81,7 +82,7 @@ const EditQuizz = () => {
             });
             
             console.log(response.data); // Affichez la réponse du serveur si nécessaire
-            // Redirigez l'utilisateur vers une autre page ou affichez un message de succès
+            navigate('/quizz', { state: { message: 'Quizz modifié avec succès!' } });
         } catch (error) {
             console.error('Erreur lors de la mise à jour du quizz :', error);
             // Affichez un message d'erreur à l'utilisateur

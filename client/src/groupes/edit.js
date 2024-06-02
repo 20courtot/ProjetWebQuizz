@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/header';
 import { BiSolidTrash } from 'react-icons/bi';
-import { useParams } from 'react-router-dom'; // Importer useParams depuis react-router-dom
+import { useParams, useNavigate } from 'react-router-dom'; // Importer useParams depuis react-router-dom
 import axios from 'axios';
 
 const EditGroupe = () => {
@@ -10,6 +10,7 @@ const EditGroupe = () => {
     const [email, setEmail] = useState('');
     const [emails, setEmails] = useState([]);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchGroupe = async () => {
@@ -64,7 +65,7 @@ const EditGroupe = () => {
             // Si la mise à jour réussit, effacez les erreurs précédentes
             setError('');
             // Traitez la réponse du backend si nécessaire
-            // Rediriger ou afficher un message de succès
+            navigate('/groupes', { state: { message: 'Groupe modifié avec succès!' } });
         } catch (error) {
             console.error('Erreur lors de la mise à jour du groupe :', error);
             // Affichez le message d'erreur dans l'interface utilisateur
